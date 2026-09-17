@@ -11,6 +11,9 @@ import { Download } from "lucide-react";
 import { RetryButton } from "@/app/ideas/[id]/retry-button";
 import type { PatentIdeaRow } from "@/lib/patent-ideas/types";
 
+// retryIdea(재분석)도 submitIdea와 같은 파이프라인을 타므로 동일하게 늘려둔다.
+export const maxDuration = 60;
+
 function bandBadgeVariant(band: PatentIdeaRow["score_band"]) {
   if (band === "가능") return "default" as const;
   if (band === "보완") return "secondary" as const;
