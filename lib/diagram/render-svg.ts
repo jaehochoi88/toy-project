@@ -13,7 +13,12 @@ const NODE_H = 70; // 2줄 라벨 + 참조부호가 겹치지 않을 최소 높�
 const GAP_MAIN = 64; // between layers, along the reading direction
 const GAP_CROSS = 26; // between nodes within the same layer
 const PAD = 28;
-const FONT = "Malgun Gothic, 'Apple SD Gothic Neo', sans-serif";
+// "Nanum Gothic" first so lib/pptx/generate-deck.ts's server-side raster
+// (which bundles that exact font — see its DIAGRAM_FONT_FAMILY) matches;
+// the rest are fallbacks for when this SVG is instead rendered live in a
+// browser (see app/ideas/[id]/page.tsx), which resolves fonts by whatever
+// the visitor's OS has, unlike the rasterizer's `loadSystemFonts: false`.
+const FONT = "'Nanum Gothic', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif";
 
 const COLOR = {
   bg: "#ffffff",
