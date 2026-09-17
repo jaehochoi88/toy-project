@@ -39,3 +39,14 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - 자동 코드 리뷰는 최대 1회, 가장 낮은 강도(`code-review low`)로만 돌린다. 리뷰어를 못 부르면 그 사실만 적고 완료로 본다.
 - 지적 중 스펙의 수용 기준을 깨거나 주 경로가 실제로 깨지는 것만 고친다. 나머지는 `docs/follow-ups/`에 한 줄로 남긴다. 재리뷰는 하지 않는다.
 - 스펙이 요구하지 않은 보안 하드닝·엣지케이스·성능 방어는 범위 밖이다.
+
+<!-- BEGIN:managed-vendor-context -->
+
+# 외부 서비스 문서 조회
+
+아래 문서는 원본이 계속 바뀌므로 저장소에 복사하지 않는다. 해당 작업을 시작할 때 원본을 조회하고, 설치된 버전·현재 API 상태와 대조한 뒤 코드를 쓴다.
+
+- **Gemini API (Google)** — 겹침 판단, 점수 산정, 다이어그램 코드 생성, 슬라이드 내용 생성 작업을 시작하기 전에 <https://ai.google.dev/gemini-api/docs>에서 현재 모델 목록과 `@google/genai` SDK 사용법을 조회한다. 모델은 계정마다 사용 가능한 목록이 달라질 수 있으므로(예: 신규 키에서 구버전 모델이 막히는 경우) 기억이나 문서의 예시 모델명을 그대로 믿지 말고, 실제 `models.list()` 호출이나 최근 오류 메시지로 확인한다. 2026년 6월부터 `Interactions API`가 새 기본 인터페이스이지만 기존 `generateContent`도 계속 지원되므로, 이 프로젝트처럼 단순한 단발성 구조화 출력 호출에는 `generateContent`를 유지해도 된다. 설치된 `@google/genai` 버전과 맞는지 확인한다.
+- **KIPRIS Plus (한국특허정보원)** — 국내 공개 특허 검색 작업을 시작하기 전에 <https://plus.kipris.or.kr/portal/data/service/List.do?subTab=SC001&entYn=N&menuNo=200100>에서 해당 서비스의 API 통합설명서를 조회한다. `ServiceKey` 인증이며 요청 파라미터와 XML 응답 필드는 설명서를 기준으로 한다. 공식 스킬과 MCP 서버는 제공되지 않으므로 이 명세서가 유일한 공식 출처다.
+
+<!-- END:managed-vendor-context -->
