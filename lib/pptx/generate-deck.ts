@@ -1,7 +1,18 @@
+import path from "node:path";
 import PptxGenJS from "pptxgenjs";
-import sharp from "sharp";
+import { Resvg } from "@resvg/resvg-js";
 import { renderDiagramSvg } from "@/lib/diagram/render-svg";
 import type { PatentIdeaRow } from "@/lib/patent-ideas/types";
+
+// Bundled so the diagram renders identically everywhere, including a
+// deployment platform's serverless runtime, which normally has no CJK
+// fonts installed — without this, Korean text in the rasterized diagram
+// comes out as tofu boxes (□□□). resvg-js is given this file directly
+// (loadSystemFonts: false) instead of asking the OS/fontconfig for a
+// font by name, which is what made "Malgun Gothic" work only on the
+// developer's own Windows machine. SIL OFL-licensed — see fonts/OFL.txt.
+const DIAGRAM_FONT_PATH = path.join(process.cwd(), "lib/pptx/fonts/NanumGothic-Regular.ttf");
+const DIAGRAM_FONT_FAMILY = "Nanum Gothic";
 
 const NAVY = "1E3A5F";
 const INK = "27272A";
@@ -51,7 +62,15 @@ async function diagramToPngDataUri(idea: PatentIdeaRow): Promise<{
 } | null> {
   if (!idea.diagram) return null;
   const { svg, width, height } = renderDiagramSvg(idea.diagram);
-  const png = await sharp(Buffer.from(svg), { density: 192 }).png().toBuffer();
+  const resvg = new Resvg(svg, {
+    fitTo: { mode: "zoom", value: 2 }, // 2x the SVG's own px size, for print-quality sharpness
+    font: {
+      fontFiles: [DIAGRAM_FONT_PATH],
+      loadSystemFonts: false,
+      defaultFontFamily: DIAGRAM_FONT_FAMILY,
+    },
+  });
+  const png = resvg.render().asPng();
   return { data: `image/png;base64,${png.toString("base64")}`, aspectRatio: width / height };
 }
 
