@@ -19,9 +19,6 @@ export async function AuthStatus() {
       <Link href="/ideas" className="text-sm font-medium underline">
         내 아이디어
       </Link>
-      <Link href="/settings" className="text-sm font-medium underline">
-        Settings
-      </Link>
       <SignOutButton />
     </div>
   );
