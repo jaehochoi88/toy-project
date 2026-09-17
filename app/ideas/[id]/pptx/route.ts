@@ -2,6 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { generatePatentDeck } from "@/lib/pptx/generate-deck";
 import type { PatentIdeaRow } from "@/lib/patent-ideas/types";
 
+// sharp로 도면을 래스터화하는 부분이 콜드 스타트 직후엔 느릴 수 있어 여유를 둔다.
+export const maxDuration = 30;
+
 function sanitizeFilename(title: string): string {
   const cleaned = title.replace(/[\\/:*?"<>|]/g, "").trim();
   return cleaned.length > 0 ? cleaned.slice(0, 60) : "특허아이디어";
